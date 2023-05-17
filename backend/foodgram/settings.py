@@ -89,7 +89,7 @@ else:
         }
     }
 
-# AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'users.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -106,7 +106,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ),
+}
 
 
 LANGUAGE_CODE = 'ru-ru'
@@ -130,9 +134,11 @@ STRING_MAX_LENGTH = 150
 EMAIL_MAX_LENGTH = 254
 ROLE_ADMIN = 'admin'
 ROLE_USER = 'user'
+RESERVED_USERNAMES = ('me',)
+USERNAME_INVALID_PATTERN = compile(r'[^\w.@+-]+')
+SELF_SUBSCRIPTION_ERROR = 'Нельзя подписаться на самого себя.'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
