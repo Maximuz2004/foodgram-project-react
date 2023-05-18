@@ -82,6 +82,7 @@ class User(AbstractUser):
     def is_admin(self):
         return self.role == settings.ROLE_ADMIN
 
+
 class Subscription(models.Model):
     user = models.ForeignKey(
         User,
