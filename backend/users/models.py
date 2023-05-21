@@ -17,7 +17,7 @@ class User(AbstractUser):
         verbose_name='Логин',
         help_text='Введите логин',
         unique=True,
-        max_length=settings.STRING_MAX_LENGTH,
+        max_length=settings.STRING_LENGTH,
         validators=(
             validate_non_reserved,
             validate_username_allowed_chars
@@ -39,21 +39,21 @@ class User(AbstractUser):
     first_name = models.CharField(
         verbose_name='Имя',
         help_text='Введите имя',
-        max_length=settings.STRING_MAX_LENGTH,
+        max_length=settings.STRING_LENGTH,
         blank=True,
         null=False,
     )
     last_name = models.CharField(
         verbose_name='Фамилия',
         help_text='Введите фамилию',
-        max_length=settings.STRING_MAX_LENGTH,
+        max_length=settings.STRING_LENGTH,
         blank=True,
         null=False,
     )
     password = models.CharField(
         verbose_name='Пароль',
         help_text='Введите пароль. Обязательно. Не более 150 символов',
-        max_length=settings.STRING_MAX_LENGTH,
+        max_length=settings.STRING_LENGTH,
         validators=(validate_password,)
     )
     created = models.DateTimeField(

@@ -1,3 +1,7 @@
-from django.shortcuts import render
 
-# Create your views here.
+from django.shortcuts import render
+from djoser.views import UserViewSet
+
+from .models import Subscription, User
+
+class CustumUserViewSet(UserViewSet):

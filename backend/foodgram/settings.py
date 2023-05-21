@@ -149,17 +149,30 @@ USE_L10N = True
 USE_TZ = True
 
 
-SSTATICFILES_DIRS = (os.path.join(BASE_DIR, 'assets'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'assets'),)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-STRING_MAX_LENGTH = 150
+STRING_LENGTH = 150
+STRING_MAX_LENGTH = 200
 EMAIL_MAX_LENGTH = 254
+HEX_COLOR_LENGTH = 7
+MIN_COOKING_TIME = 1
+MIN_AMOUNT_VALUE = 1
+COOKING_TIME_ERROR_MESSAGE = f'Время приготовления должно быть не менее {MIN_COOKING_TIME}'
+AMOUNT_VALUE_ERROR_MESSAGE = f'Количество ингредиента не может быть меньше {MIN_AMOUNT_VALUE}'
 ROLE_ADMIN = 'admin'
 ROLE_USER = 'user'
-RESERVED_USERNAMES = ('me',)
+DELETED_USER_DATA = {
+    'username': 'deleted_user',
+    'first_name': 'user',
+    'last_name': 'deleted',
+    'password': os.getenv('DELETED_USER_PASSWORD', default=';dkha;ksdfhga;kfgh'),
+
+
+}
+RESERVED_USERNAMES = ('me', 'deleted_user',)
 USERNAME_INVALID_PATTERN = compile(r'[^\w.@+-]+')
 SELF_SUBSCRIPTION_ERROR = 'Нельзя подписаться на самого себя.'
 
