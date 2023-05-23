@@ -164,15 +164,7 @@ COOKING_TIME_ERROR_MESSAGE = f'Время приготовления должн�
 AMOUNT_VALUE_ERROR_MESSAGE = f'Количество ингредиента не может быть меньше {MIN_AMOUNT_VALUE}'
 ROLE_ADMIN = 'admin'
 ROLE_USER = 'user'
-DELETED_USER_DATA = {
-    'username': 'deleted_user',
-    'first_name': 'user',
-    'last_name': 'deleted',
-    'password': os.getenv('DELETED_USER_PASSWORD', default=';dkha;ksdfhga;kfgh'),
-
-
-}
-RESERVED_USERNAMES = ('me', 'deleted_user',)
+RESERVED_USERNAMES = ('me', )
 USERNAME_INVALID_PATTERN = compile(r'[^\w.@+-]+')
 SELF_SUBSCRIPTION_ERROR = 'Нельзя подписаться на самого себя.'
 

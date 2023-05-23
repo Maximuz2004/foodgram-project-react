@@ -5,10 +5,12 @@ ERROR_USERNAME_RESERVED = ("'{value}' нельзя использовать в �
                            "имени пользователя")
 ERROR_USERNAME_SYMBOL = "Нельзя использовать символы '{}' в username"
 
+
 def validate_non_reserved(value):
     if value in settings.RESERVED_USERNAMES:
         raise ValidationError(ERROR_USERNAME_RESERVED.format(value=value))
     return value
+
 
 def validate_username_allowed_chars(value):
     invalid_chars = settings.USERNAME_INVALID_PATTERN.findall(value)

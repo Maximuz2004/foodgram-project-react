@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .mixins import EmptyFieldMixin
-from .models import User
+from .models import Subscription, User
 
 
 @admin.register(User)
@@ -16,3 +16,10 @@ class UserAdmin(EmptyFieldMixin, admin.ModelAdmin):
     )
     search_fields = ('username', 'email')
     list_filter = ('username', 'email')
+
+
+@admin.register(Subscription)
+class SubscriptionAdmin(EmptyFieldMixin, admin.ModelAdmin):
+    list_display = ('user', 'author')
+    search_fields = ('user', 'author')
+    list_filter = ('user', 'author')

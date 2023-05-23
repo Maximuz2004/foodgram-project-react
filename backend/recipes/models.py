@@ -5,7 +5,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 User = get_user_model()
-DELETED_USER = User.objects.get(username='deleted_user')
 
 
 class Tag(models.Model):
@@ -63,8 +62,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         verbose_name='Автор',
-        on_delete=models.SET_DEFAULT,
-        default=DELETED_USER,
+        on_delete=models.CASCADE,
         related_name='recipes',
     )
     name = models.CharField(
@@ -112,6 +110,28 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class TagInRecipe(models.Model):
+    recipe = models.ForeignKey(
+        Recipe,
+        verbose_name='Рецепт',
+        on_delete=models.CASCADE,
+        related_name='tag_recipe'
+    )
+    tag = models.ForeignKey(
+        Tag,
+        verbose_name='Тег',
+        on_delete=models.CASCADE,
+        related_name='tag_recipe'
+    )
+
+    class Meta:
+        verbose_name = 'Тег рецепта',
+        verbose_name_plural = 'Теги рецептов'
+
+    def __str__(self):
+        return f'{self.recipe.name} на {self.tag.name}'
 
 
 class IngredientInRecipe(models.Model):
@@ -175,7 +195,7 @@ class ShoppingCart(models.Model):
         return f'{self.recipe.name} в списке покупок у {self.user.username}'
 
 
-class Favorite(models.Model):
+class Favorites(models.Model):
     user = models.ForeignKey(
         User,
         verbose_name='Пользователь',
