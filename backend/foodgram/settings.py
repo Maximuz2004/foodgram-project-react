@@ -167,6 +167,7 @@ ROLE_USER = 'user'
 RESERVED_USERNAMES = ('me', )
 USERNAME_INVALID_PATTERN = compile(r'[^\w.@+-]+')
 SELF_SUBSCRIPTION_ERROR = 'Нельзя подписаться на самого себя.'
+ALREADY_IN_FAVORITES_ERROR = 'Этот рецепт уже в избранном!'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
