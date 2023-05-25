@@ -166,8 +166,13 @@ ROLE_ADMIN = 'admin'
 ROLE_USER = 'user'
 RESERVED_USERNAMES = ('me', )
 USERNAME_INVALID_PATTERN = compile(r'[^\w.@+-]+')
-SELF_SUBSCRIPTION_ERROR = 'Нельзя подписаться на самого себя.'
+SELF_SUBSCRIPTION_ERROR = 'Нельзя подписаться на самого себя!'
+SAME_SUBSCRIPTION_ERROR = 'Нельзя повторно подписаться автора!'
 ALREADY_IN_FAVORITES_ERROR = 'Этот рецепт уже в избранном!'
+SAME_INGREDIENTS_ERROR = 'Ингредиенты не должны повторятся!'
+NO_TAGS_ERROR = 'У рецепта должен быть хотябы один тег!'
+SAME_TAGS_ERROR = 'Не должно быть одинаковых тегов!'
+RECIPE_IN_CART_ERROR = 'Этот рецепт уже в списке покупок!'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
