@@ -14,7 +14,7 @@ from api.pagination import CustomPagination
 class CustomUserViewSet(UserViewSet):
     pagination_class = CustomPagination
     lookup_field = 'id'
-    search_fields = ('usename',)
+    search_fields = ('username',)
 
     @action(
         methods=('get',),

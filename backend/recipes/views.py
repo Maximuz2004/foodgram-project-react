@@ -12,7 +12,7 @@ from api.pagination import CustomPagination
 from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
 from recipes.models import (Favorites, Ingredient, IngredientInRecipe, Recipe,
                             ShoppingCart, Tag)
-from recipes.serializers import (FavoriteSerializer, IngredientSerializer,
+from recipes.serializers import (FavoritesSerializer, IngredientSerializer,
                                  RecipeCreateSerializer, RecipeViewSerializer,
                                  ShoppingCartSerializer, TagSerializer)
 

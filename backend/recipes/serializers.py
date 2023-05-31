@@ -16,14 +16,14 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('id', 'name', 'color', 'slug')
-        read_only_fields = '__all__'
+        read_only_fields = '__all__',
 
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = ('id', 'name', 'measurement_unit')
-        read_only_fields = '__all__'
+        read_only_fields = '__all__',
 
 
 class IngredientInRecpeSerializer(serializers.ModelSerializer):
@@ -36,7 +36,6 @@ class IngredientInRecpeSerializer(serializers.ModelSerializer):
     class Meta:
         model = IngredientInRecipe
         fields = ('id', 'name', 'measurement_unit', 'amount')
-
 
 
 class AddIngredientSerializer(serializers.ModelSerializer):
@@ -85,7 +84,7 @@ class FavoritePreviewSerializer(serializers.ModelSerializer):
 
 class RecipeViewSerializer(serializers.ModelSerializer):
     author = CustomUserSerializer(read_only=True)
-    tags = TagSerializer(many=True,read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
     ingredients = serializers.SerializerMethodField(
         read_only=True,
         source='get_ingredients'
@@ -96,7 +95,7 @@ class RecipeViewSerializer(serializers.ModelSerializer):
     )
     is_in_shopping_cart = serializers.SerializerMethodField(
         read_only=True,
-        source='get_is_in_shoping_cart'
+        source='get_is_in_shopping_cart'
     )
 
     class Meta:
@@ -124,7 +123,7 @@ class RecipeViewSerializer(serializers.ModelSerializer):
             return False
         return request.user.favorite_user.filter(recipe=obj).exists()
 
-    def get_is_in_shopping_cart(self,obj):
+    def get_is_in_shopping_cart(self, obj):
         request = self.context.get('request')
         if not request or request.user.is_anonymous:
             return False
@@ -246,6 +245,7 @@ class FollowSerializer(serializers.ModelSerializer):
                 message=settings.SAME_SUBSCRIPTION_ERROR
             ),
         )
+
     def to_representation(self, instance):
         return SubscriptionSerializer(
             instance.author,
@@ -271,7 +271,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     recipes = serializers.SerializerMethodField(
         source='get_recipes'
     )
-    recipes_count =  serializers.SerializerMethodField(
+    recipes_count = serializers.SerializerMethodField(
         source='get_recipes_count'
     )
 
