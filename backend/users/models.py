@@ -6,11 +6,6 @@ from django.db import models
 from users.validators import (validate_non_reserved,
                               validate_username_allowed_chars)
 
-ROLES_CHOICES = (
-    (settings.ROLE_USER, 'Пользователь'),
-    (settings.ROLE_ADMIN, 'Администратор'),
-)
-
 
 class User(AbstractUser):
     username = models.CharField(
@@ -22,19 +17,16 @@ class User(AbstractUser):
             validate_non_reserved,
             validate_username_allowed_chars
         ),
-        error_messages={'unique': 'Это имя уже занято!'}
+        error_messages={'unique': settings.USERNAME_ALREADY_TAKEN_MESSAGE},
+        db_index=True
     )
     email = models.EmailField(
         verbose_name='адрес электронной почты',
         help_text='введите адрес электронной почты',
         unique=True,
         max_length=settings.EMAIL_MAX_LENGTH,
-        error_messages={'unique': 'Этот email уже зарегистрирован!'}
-    )
-    role = models.CharField(
-        choices=ROLES_CHOICES,
-        default=settings.ROLE_USER,
-        max_length=max(len(role) for role, _ in ROLES_CHOICES)
+        error_messages={'unique': settings.EMAIL_ALREADY_TAKEN_MESSAGE},
+        db_index=True
     )
     first_name = models.CharField(
         verbose_name='Имя',
@@ -78,23 +70,19 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-    @property
-    def is_admin(self):
-        return self.role == settings.ROLE_ADMIN
-
 
 class Subscription(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='follower',
-        verbose_name='Пользователь, который подписывается'
+        verbose_name='Подписчик на автора рецепта'
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='following',
-        verbose_name='Пользователь, на которого подписываются'
+        verbose_name='Автор рецепта, на которого подписываются'
     )
 
     def __str__(self):

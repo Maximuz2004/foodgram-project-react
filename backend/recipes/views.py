@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import CustomPagination
-from api.permissions import IsAddminOrReadOnly, IsAuthorOrReadOnly
+from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
 from recipes.models import (Favorites, Ingredient, IngredientInRecipe, Recipe,
                             ShoppingCart, Tag)
 from recipes.serializers import (FavoriteSerializer, IngredientSerializer,
@@ -20,14 +20,14 @@ from recipes.serializers import (FavoriteSerializer, IngredientSerializer,
 class TagsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = (IsAddminOrReadOnly,)
+    permission_classes = (IsAdminOrReadOnly,)
     pagination_class = None
 
 
 class IngredientsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    permission_classes = (IsAddminOrReadOnly,)
+    permission_classes = (IsAdminOrReadOnly,)
     pagination_class = None
     filter_backends = (DjangoFilterBackend,)
     filterset_class = IngredientFilter

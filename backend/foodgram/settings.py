@@ -12,9 +12,10 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', default='django-insecure-1j#czt3k8&uc!i29flx$xfm0ee7vh@ovhqigz2fb&3u16#nvi+')
+SECRET_KEY = os.getenv('SECRET_KEY',
+                       default='django-insecure-1j#czt3k8&uc!i29flx$xfm0ee7vh@ovhqigz2fb&3u16#nvi+')
 
-if socket.gethostname() in ('localhost','127.0.0.1', 'MaximuZ-Notebook'):
+if socket.gethostname() in ('localhost', '127.0.0.1', 'MaximuZ-Notebook'):
     DEBUG = True
 else:
     DEBUG = False
@@ -137,7 +138,6 @@ DJOSER = {
     },
 }
 
-
 LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'Europe/Moscow'
@@ -147,7 +147,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'assets'),)
 STATIC_URL = '/static/'
@@ -164,8 +163,10 @@ COOKING_TIME_ERROR_MESSAGE = f'Время приготовления должн�
 AMOUNT_VALUE_ERROR_MESSAGE = f'Количество ингредиента не может быть меньше {MIN_AMOUNT_VALUE}'
 ROLE_ADMIN = 'admin'
 ROLE_USER = 'user'
-RESERVED_USERNAMES = ('me', )
+RESERVED_USERNAMES = ('me',)
 USERNAME_INVALID_PATTERN = compile(r'[^\w.@+-]+')
+USERNAME_ALREADY_TAKEN_MESSAGE = 'Это имя уже занято!'
+EMAIL_ALREADY_TAKEN_MESSAGE = 'Этот email уже зарегистрирован!'
 SELF_SUBSCRIPTION_ERROR = 'Нельзя подписаться на самого себя!'
 SAME_SUBSCRIPTION_ERROR = 'Нельзя повторно подписаться автора!'
 ALREADY_IN_FAVORITES_ERROR = 'Этот рецепт уже в избранном!'
@@ -173,8 +174,7 @@ SAME_INGREDIENTS_ERROR = 'Ингредиенты не должны повтор�
 NO_TAGS_ERROR = 'У рецепта должен быть хотябы один тег!'
 SAME_TAGS_ERROR = 'Не должно быть одинаковых тегов!'
 RECIPE_IN_CART_ERROR = 'Этот рецепт уже в списке покупок!'
+NO_AUTHOR_SUBSCRIPTION = 'Нельзя отписаться от автора, не имея на него подписку.'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

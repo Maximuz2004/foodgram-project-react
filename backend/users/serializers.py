@@ -5,7 +5,7 @@ from .models import User
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
-    class Meta:
+    class Meta(UserCreateSerializer.Meta):
         model = User
         fields = (
             'email',
@@ -23,7 +23,7 @@ class CustomUserSerializer(UserSerializer):
         request = self.context.get('request')
         if not request or request.user.is_anonymous:
             return False
-        return request.user.subscriber.filter(author=obj).exists()
+        return request.user.follower.filter(author=obj).exists()
 
     class Meta:
         model = User

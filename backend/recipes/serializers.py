@@ -16,28 +16,39 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('id', 'name', 'color', 'slug')
+        read_only_fields = '__all__'
 
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = ('id', 'name', 'measurement_unit')
+        read_only_fields = '__all__'
 
 
 class IngredientInRecpeSerializer(serializers.ModelSerializer):
-    id = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
+    id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
         source='ingredient.measurement_unit'
     )
-    amount = serializers.IntegerField()
 
     class Meta:
         model = IngredientInRecipe
         fields = ('id', 'name', 'measurement_unit', 'amount')
 
+
+
+class AddIngredientSerializer(serializers.ModelSerializer):
+    id = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
+    amount = serializers.IntegerField()
+
+    class Meta:
+        model = IngredientInRecipe
+        fields = ('id', 'amount')
+
     def validate_amount(self, value):
-        if int(value) < 1:
+        if int(value) < settings.MIN_AMOUNT_VALUE:
             raise serializers.ValidationError(
                 settings.AMOUNT_VALUE_ERROR_MESSAGE
             )
@@ -74,7 +85,7 @@ class FavoritePreviewSerializer(serializers.ModelSerializer):
 
 class RecipeViewSerializer(serializers.ModelSerializer):
     author = CustomUserSerializer(read_only=True)
-    tags = TagSerializer(many=True)
+    tags = TagSerializer(many=True,read_only=True)
     ingredients = serializers.SerializerMethodField(
         read_only=True,
         source='get_ingredients'
@@ -126,7 +137,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         many=True
     )
     image = Base64ImageField()
-    ingredients = IngredientInRecpeSerializer(many=True)
+    ingredients = AddIngredientSerializer(many=True)
     author = CustomUserSerializer(read_only=True)
 
     class Meta:
@@ -166,7 +177,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                     settings.SAME_TAGS_ERROR
                 )
             tags_list.append(tag)
-        if self.initial_data.get('cooling_time') <= 0:
+        if self.initial_data.get('cooking_time') <= 0:
             raise serializers.ValidationError(
                 settings.COOKING_TIME_ERROR_MESSAGE
             )
@@ -237,7 +248,7 @@ class FollowSerializer(serializers.ModelSerializer):
         )
     def to_representation(self, instance):
         return SubscriptionSerializer(
-            instance.authon,
+            instance.author,
             context={'request': self.context.get('request')}
 
         ).data
@@ -296,11 +307,12 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             recipes = obj.recipes.all()
         return FollowRecipeSerializer(recipes, many=True, context=context).data
 
-    def get_recipes_count(self, obj):
+    @staticmethod
+    def get_recipes_count(obj):
         return obj.recipes.count()
 
 
-class ShopingCartSerializer(serializers.ModelSerializer):
+class ShoppingCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShoppingCart
         fields = ('user', 'recipe')

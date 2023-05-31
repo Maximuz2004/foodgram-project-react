@@ -1,4 +1,4 @@
-from api.pagination import CustomPagination
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
 from recipes.serializers import FollowSerializer, SubscriptionSerializer
@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Subscription, User
+from api.pagination import CustomPagination
 
 
 class CustomUserViewSet(UserViewSet):
@@ -61,5 +62,10 @@ class CustomUserViewSet(UserViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         following = get_object_or_404(Subscription, user=user, author=author)
+        if not following:
+            return Response(
+                settings.NO_AUTHOR_SUBSCRIPTION,
+                status=status.HTTP_400_BAD_REQUEST
+            )
         following.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
