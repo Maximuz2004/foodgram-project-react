@@ -246,6 +246,12 @@ class FollowSerializer(serializers.ModelSerializer):
             ),
         )
 
+    def validate(self, data):
+        user = data.get('user')
+        if user == self.context['request'].user:
+            raise serializers.ValidationError(settings.SELF_SUBSCRIPTION_ERROR)
+        return data
+
     def to_representation(self, instance):
         return SubscriptionSerializer(
             instance.author,
@@ -322,12 +328,14 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
         recipe = data['recipe']
-        if request.user.shopping_cart_user.filter(recipe=recipe):
+        if request.user.shopping_cart_user.filter(recipe=recipe).exists():
             raise serializers.ValidationError(settings.RECIPE_IN_CART_ERROR)
         return data
 
     def to_representation(self, instance):
+        request = self.context.get('request')
+        context = {'request': request}
         return RecipeViewSerializer(
             instance.recipe,
-            context={'request': self.context.get('request')}
-        )
+            context=context
+        ).data

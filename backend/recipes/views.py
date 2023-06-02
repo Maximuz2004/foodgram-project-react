@@ -54,7 +54,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
     def set_favorite(self, request, pk=id):
         user = request.user
         if request.method == 'POST':
-            serializer = FavoriteSerializer(
+            serializer = FavoritesSerializer(
                 Favorites.objects.create(
                     user=user,
                     recipe=get_object_or_404(Recipe, pk=pk))
@@ -98,7 +98,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
         shopping_cart = IngredientInRecipe.objects.filter(
             recipe__shopping_cart_recipe__user=request.user
         ).values_list(
-            'ingredient__name', 'ingredient_measurement_unit'
+            'ingredient__name', 'ingredient__measurement_unit'
         ).order_by(
             'ingredient__name'
         ).annotate(

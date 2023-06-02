@@ -88,15 +88,19 @@ class Subscription(models.Model):
     def __str__(self):
         return f'{self.user.username}->{self.author.username}'
 
-    def clean(self):
-        if self.user == self.author:
-            raise ValidationError(settings.SELF_SUBSCRIPTION_ERROR)
+    # def clean(self):
+    #     if self.user == self.author:
+    #         raise ValidationError(settings.SELF_SUBSCRIPTION_ERROR)
 
     class Meta:
         constraints = (
             models.UniqueConstraint(
                 fields=('user', 'author'),
                 name='unique_follow'
+            ),
+            models.CheckConstraint(
+                name='%(app_label)s_%(class)s_prevent_self_follow',
+                check=~models.Q(user=models.F('author')),
             ),
         )
         verbose_name = 'Подписка'

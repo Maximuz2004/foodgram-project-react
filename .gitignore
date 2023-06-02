@@ -131,4 +131,6 @@ dmypy.json
 # .idea
 .idea
 /backend/static/
-!/backend/users/migrations/
+/backend/users/migrations/
+/backend/recipes/migrations/
+/backend/media/
