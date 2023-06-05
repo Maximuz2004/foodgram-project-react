@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
 from django.db import models
+
 from users.validators import (validate_non_reserved,
                               validate_username_allowed_chars)
 
@@ -87,10 +87,6 @@ class Subscription(models.Model):
 
     def __str__(self):
         return f'{self.user.username}->{self.author.username}'
-
-    # def clean(self):
-    #     if self.user == self.author:
-    #         raise ValidationError(settings.SELF_SUBSCRIPTION_ERROR)
 
     class Meta:
         constraints = (

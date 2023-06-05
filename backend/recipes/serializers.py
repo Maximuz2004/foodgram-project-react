@@ -84,7 +84,7 @@ class FavoritePreviewSerializer(serializers.ModelSerializer):
 
 class RecipeViewSerializer(serializers.ModelSerializer):
     author = CustomUserSerializer(read_only=True)
-    tags = TagSerializer(many=True, read_only=True)
+    tags = TagSerializer(many=True)
     ingredients = serializers.SerializerMethodField(
         read_only=True,
         source='get_ingredients'
@@ -176,7 +176,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                     settings.SAME_TAGS_ERROR
                 )
             tags_list.append(tag)
-        if self.initial_data.get('cooking_time') <= 0:
+        if int(self.initial_data.get('cooking_time')) <= 0:
             raise serializers.ValidationError(
                 settings.COOKING_TIME_ERROR_MESSAGE
             )
@@ -248,7 +248,8 @@ class FollowSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         user = data.get('user')
-        if user == self.context['request'].user:
+        author = data.get('author')
+        if user == author:
             raise serializers.ValidationError(settings.SELF_SUBSCRIPTION_ERROR)
         return data
 
