@@ -6,6 +6,7 @@ from rest_framework.validators import UniqueTogetherValidator
 
 from users.models import Subscription
 from users.serializers import CustomUserSerializer
+
 from .models import (Favorites, Ingredient, IngredientInRecipe, Recipe,
                      ShoppingCart, Tag)
 
@@ -154,15 +155,16 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         ingredients = self.initial_data.get('ingredients')
-        ingredients_list = []
+        ingredients_list = set()
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
             if ingredient_id in ingredients_list:
                 raise serializers.ValidationError(
                     settings.SAME_INGREDIENTS_ERROR
                 )
-            ingredients_list.append(ingredient_id)
-            if int(ingredient['amount']) <= 0:
+            ingredients_list.add(ingredient_id)
+            if (settings.MAX_AMOUNT_VALUE < int(ingredient['amount'])
+                    <= settings.MIN_AMOUNT_VALUE):
                 raise serializers.ValidationError(
                     settings.AMOUNT_VALUE_ERROR_MESSAGE
                 )
@@ -176,18 +178,17 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                     settings.SAME_TAGS_ERROR
                 )
             tags_list.append(tag)
-        if int(self.initial_data.get('cooking_time')) <= 0:
+        if (
+                settings.MAX_COOKING_TIME
+                < int(self.initial_data.get('cooking_time'))
+                <= settings.MIN_COOKING_TIME
+        ):
             raise serializers.ValidationError(
                 settings.COOKING_TIME_ERROR_MESSAGE
             )
         return data
 
-    def create(self, validated_data):
-        request = self.context.get('request')
-        ingredients = validated_data.pop('ingredients', None)
-        tags = validated_data.pop('tags', None)
-        recipe = Recipe.objects.create(author=request.user, **validated_data)
-        recipe.tags.set(tags)
+    def create_ingredients(self, recipe, ingredients):
         IngredientInRecipe.objects.bulk_create(
             [
                 IngredientInRecipe(
@@ -198,6 +199,14 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                 for ingredient in ingredients
             ]
         )
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        ingredients = validated_data.pop('ingredients', None)
+        tags = validated_data.pop('tags', None)
+        recipe = Recipe.objects.create(author=request.user, **validated_data)
+        recipe.tags.set(tags)
+        self.create_ingredients(recipe, ingredients)
         return recipe
 
     def update(self, instance, validated_data):
@@ -214,16 +223,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             instance.tags.set(tags)
         if ingredients:
             IngredientInRecipe.objects.filter(recipe=instance).delete()
-            IngredientInRecipe.objects.bulk_create(
-                [
-                    IngredientInRecipe(
-                        recipe=instance,
-                        ingredient=ingredient['id'],
-                        amount=ingredient['amount']
-                    )
-                    for ingredient in ingredients
-                ]
-            )
+            self.create_ingredients(instance, ingredients)
         instance.save()
         return instance
 

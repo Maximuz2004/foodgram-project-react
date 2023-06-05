@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from users.mixins import EmptyFieldMixin
+
 from .models import (Favorites, Ingredient, IngredientInRecipe, Recipe,
                      ShoppingCart, Tag, TagInRecipe)
 
@@ -8,6 +9,7 @@ from .models import (Favorites, Ingredient, IngredientInRecipe, Recipe,
 class IngredientInRecipeInline(admin.TabularInline):
     model = IngredientInRecipe
     extra = 1
+    min_num = 1
 
 
 class TagInRecipeInLine(admin.TabularInline):

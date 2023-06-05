@@ -89,6 +89,7 @@ class Subscription(models.Model):
         return f'{self.user.username}->{self.author.username}'
 
     class Meta:
+        ordering = ('-author_id',)
         constraints = (
             models.UniqueConstraint(
                 fields=('user', 'author'),
