@@ -1,5 +1,5 @@
 # Проект Продуктовый помощник
-![workflow status](https://github.com/maximuz2004/foodgram-project-react/actions/workflows/yamdb_workflow.yml/badge.svg)
+![workflow status](https://github.com/maximuz2004/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
 ### Описание:
 Сервис позволяет пользователям публиковать рецепты, подписываться на публикации других пользователей, добавлять понравившиеся рецепты в список «Избранное», а перед походом в магазин скачивать сводный список продуктов, необходимых для приготовления одного или нескольких выбранных блюд.
 
