@@ -1,14 +1,16 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
-from recipes.serializers import FollowSerializer, SubscriptionSerializer
+
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+
 from .models import Subscription, User
 from api.pagination import CustomPagination
+from recipes.serializers import FollowSerializer, SubscriptionSerializer
 
 
 class CustomUserViewSet(UserViewSet):
