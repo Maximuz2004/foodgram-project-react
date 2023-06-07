@@ -80,11 +80,11 @@ sudo docker-compose up -d
 sudo docker-compose exec backend python manage.py makemigrations
 sudo docker-compose exec backend python manage.py migrate
 sudo docker-compose exec backend python manage.py collectstatic --no-input
-sudo docker-compose exec web python manage.py createsuperuser
-sudo docker-compose exec web python manage.py load_data
+sudo docker-compose exec backend python manage.py createsuperuser
+sudo docker-compose exec backend python manage.py load_data
 ```
 
-Проект доступен по адресу: http://51.250.17.23/recipes
+Проект доступен по адресу: http://130.193.34.139/recipes
 
 ## Разработчик
 [Максим Титов](https://github.com/Maximuz2004). 
