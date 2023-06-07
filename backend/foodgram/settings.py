@@ -17,7 +17,7 @@ if socket.gethostname() in ('localhost', '127.0.0.1', 'MaximuZ-Notebook'):
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', default='*')]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='*').split(' ')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
