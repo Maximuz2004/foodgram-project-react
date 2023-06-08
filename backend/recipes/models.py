@@ -1,7 +1,7 @@
 from colorfield.fields import ColorField
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 User = get_user_model()
@@ -153,6 +153,10 @@ class IngredientInRecipe(models.Model):
         validators=(
             MinValueValidator(
                 settings.MIN_AMOUNT_VALUE,
+                message=settings.AMOUNT_VALUE_ERROR_MESSAGE
+            ),
+            MaxValueValidator(
+                settings.MAX_AMOUNT_VALUE,
                 message=settings.AMOUNT_VALUE_ERROR_MESSAGE
             ),
         )

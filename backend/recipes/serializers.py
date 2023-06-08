@@ -48,7 +48,8 @@ class AddIngredientSerializer(serializers.ModelSerializer):
         fields = ('id', 'amount')
 
     def validate_amount(self, value):
-        if settings.MAX_AMOUNT_VALUE < int(value) < settings.MIN_AMOUNT_VALUE:
+        if (not settings.MIN_AMOUNT_VALUE
+                <= int(value) <= settings.MAX_AMOUNT_VALUE):
             raise serializers.ValidationError(
                 settings.AMOUNT_VALUE_ERROR_MESSAGE
             )
