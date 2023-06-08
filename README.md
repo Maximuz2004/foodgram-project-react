@@ -87,4 +87,4 @@ sudo docker-compose exec backend python manage.py load_data
 Проект доступен по адресу: http://130.193.34.139/recipes
 
 ## Разработчик
-[Максим Титов](https://github.com/Maximuz2004). 
+[Максим Титов](https://github.com/Maximuz2004)
